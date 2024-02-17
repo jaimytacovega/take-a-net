@@ -1,4 +1,4 @@
-import { login, getAllUsers, getUser, createUser, updateUser } from './api.mjs'
+import { login, getAll, get, create, update } from './api.mjs'
 
 
 let username = 'admin'
@@ -9,12 +9,12 @@ let token = await login({ username, password })
 console.log({ username, token })
 
 // runs properly, but token is alive for a while
-let users = await getAllUsers({ token })
+let users = await getAll({ token })
 console.log({ users })
 
 // added username 'jaimy_test_1' succesfully once, now throws status 500
 let id = '2'
-let createdUser = await createUser({ token, user: {
+let createdUser = await create({ token, user: {
     username: `jaimy_test_${id}`,
     password: `jaimy_test_${id}_1234`,
     email: `jaimy_test_${id}@dssnetwork.es`,
@@ -24,11 +24,11 @@ let createdUser = await createUser({ token, user: {
 console.log({ createdUser })
 
 // throws status 500
-const user = await getUser({ token, username: 'username_test' })
+const user = await get({ token, username: 'username_test' })
 console.log({ user })
 
 // throws status 500
-const updatedUser = await updateUser({
+const updatedUser = await update({
     token,
     user: {
         username: 'jaimy_test_1',

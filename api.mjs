@@ -35,7 +35,7 @@ const login = async ({ username, password }) => {
 
     const options = {
         method: 'POST',
-        headers: headers,
+        headers,
         body,
         redirect: 'follow'
     }
@@ -46,7 +46,7 @@ const login = async ({ username, password }) => {
     return result?.data?.token
 }
 
-const getAllUsers = async ({ token }) => {
+const getAll = async ({ token }) => {
     const headers = new Headers()
     headers.append('Content-Type', 'application/json')
     headers.append('Accept', 'application/json')
@@ -54,7 +54,7 @@ const getAllUsers = async ({ token }) => {
 
     const options = {
         method: 'GET',
-        headers: headers,
+        headers,
         redirect: 'follow'
     }
 
@@ -64,7 +64,7 @@ const getAllUsers = async ({ token }) => {
     return result?.data?.usuarios
 }
 
-const getUser = async ({ token, username }) => {
+const get = async ({ token, username }) => {
     const headers = new Headers()
     headers.append('Content-Type', 'application/json')
     headers.append('Accept', 'application/json')
@@ -72,7 +72,7 @@ const getUser = async ({ token, username }) => {
 
     const options = {
         method: 'GET',
-        headers: headers,
+        headers,
         redirect: 'follow'
     }
 
@@ -82,18 +82,18 @@ const getUser = async ({ token, username }) => {
     return result?.data
 }
 
-const createUser = async ({ token, user }) => {
+const create = async ({ token, user }) => {
     const headers = new Headers()
     headers.append('Content-Type', 'application/json')
     headers.append('Accept', 'application/json')
     headers.append('Authorization', `Bearer ${token}`)
 
-    const raw = JSON.stringify(user)
+    const body = JSON.stringify(user)
 
     const options = {
         method: 'POST',
-        headers: headers,
-        body: raw,
+        headers,
+        body,
         redirect: 'follow'
     }
 
@@ -103,20 +103,20 @@ const createUser = async ({ token, user }) => {
     return result?.data
 }
 
-const changeUserPassword = async ({ password, password_confirm }) => {
+const changePassword = async ({ password, password_confirm }) => {
     const headers = new Headers()
     headers.append('Content-Type', 'application/json')
     headers.append('Accept', 'application/json')
 
-    const raw = JSON.stringify({
+    const body = JSON.stringify({
         password,
         password_confirm,
     })
 
     const options = {
         method: 'POST',
-        headers: headers,
-        body: raw,
+        headers,
+        body,
         redirect: 'follow'
     }
 
@@ -126,7 +126,7 @@ const changeUserPassword = async ({ password, password_confirm }) => {
     return result?.data
 }
 
-const updateUser = async ({ token, user }) => {
+const update = async ({ token, user }) => {
     const headers = new Headers()
     headers.append('Content-Type', 'application/json')
     headers.append('Accept', 'application/json')
@@ -144,7 +144,7 @@ const updateUser = async ({ token, user }) => {
 
     const options = {
         method: 'PATCH',
-        headers: headers,
+        headers,
         body,
         redirect: 'follow'
     }
@@ -165,7 +165,7 @@ const logout = async () => {
 
     const options = {
         method: 'POST',
-        headers: headers,
+        headers,
         body: urlencoded,
         redirect: 'follow'
     }
@@ -178,12 +178,13 @@ const logout = async () => {
 
 export {
     login,
+    logout,
 
-    getAllUsers,
-    getUser,
+    getAll,
+    get,
 
-    createUser,
-    updateUser,
+    create,
+    update,
 
-    changeUserPassword,
+    changePassword,
 }
