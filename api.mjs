@@ -2,18 +2,17 @@ const customFetch = async ({ url, options }) => {
     try {
         const response = await fetch(url, options)
 
-        // console.log('--- response.status =', response.status)
-        // console.log('--- response.statusText =', response.statusText)
-        // console.log('--- response.ok =', response.ok)
+        console.log('--- response.status =', response.status)
+        console.log('--- response.statusText =', response.statusText)
+        console.log('--- response.ok =', response.ok)
         // console.log('--- response =', response)
 
         if (!response.ok) throw response.statusText
 
         const json = await response.json()
-        // console.log('--- json =', json)
+        console.log('--- json =', json)
 
         if (json?.status !== 'success') throw json?.messages ?? json
-        if (json?.messages?.length) throw json.messages
 
         const data = json?.data
 
@@ -79,7 +78,7 @@ const get = async ({ token, username }) => {
     const result = await customFetch({ url: `https://apptan.sierpes48.es/usuario/${username}`, options })
     if (result?.err) return result
 
-    return result?.data
+    return result?.data?.usuario
 }
 
 const create = async ({ token, user }) => {
@@ -100,7 +99,8 @@ const create = async ({ token, user }) => {
     const result = await customFetch({ url: 'https://apptan.sierpes48.es/usuarios/crear', options })
     if (result?.err) return result
 
-    return result?.data
+    // console.log('--- result?.data =', result?.data)
+    return result?.data?.usuario
 }
 
 const changePassword = async ({ password, password_confirm }) => {
@@ -148,8 +148,8 @@ const update = async ({ token, user }) => {
         body,
         redirect: 'follow'
     }
-
-    const result = await customFetch({ url: `https://apptan.sierpes48.es/usuarios/editar/${user?.username}`, options })
+    
+    const result = await customFetch({ url: `https://apptan.sierpes48.es/usuarios/editar/username_test`, options })
     if (result?.err) return result
 
     return result?.data

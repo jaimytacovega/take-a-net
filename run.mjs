@@ -8,24 +8,24 @@ let password = '1234abc'
 let token = await login({ username, password })
 console.log({ username, token })
 
-// runs properly, but token is alive for a while
-let users = await getAll({ token })
-console.log({ users })
+// // runs properly
+// let users = await getAll({ token })
+// console.log({ users: users?.map((user) => user?.username) })
 
-// added username 'jaimy_test_1' succesfully once, now throws status 500
-let id = '2'
-let createdUser = await create({ token, user: {
-    username: `jaimy_test_${id}`,
-    password: `jaimy_test_${id}_1234`,
-    email: `jaimy_test_${id}@dssnetwork.es`,
-    first_name: `jaimy_test_${id}`,
-    last_name: 'DSS Network',
-} })
-console.log({ createdUser })
+// // runs properly
+// let id = '9'
+// let createdUser = await create({ token, user: {
+//     username: `jaimy_test_${id}`,
+//     password: `jaimy_test_${id}_1234`,
+//     email: `jaimy_test_${id}@dssnetwork.es`,
+//     first_name: `jaimy_test_${id}`,
+//     last_name: 'DSS Network',
+// } })
+// console.log({ createdUser })
 
-// throws status 500
-const user = await get({ token, username: 'username_test' })
-console.log({ user })
+// // runs properly
+// const user = await get({ token, username: 'admin' })
+// console.log({ user })
 
 // throws status 500
 const updatedUser = await update({
