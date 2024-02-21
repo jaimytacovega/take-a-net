@@ -18,7 +18,7 @@ const getRoute = async ({ request, env }) => {
             <main class="auth-main">
                 <div class="content">
                     <div class="card-auth card-white">
-                        <img src="/img/logo/take-a-net-logo.svg" width="200" height="30" alt="take a note">
+                        <img src="/img/logo/take-a-net-logo.svg" width="200" height="30" alt="take a net">
                         <form>
                             <fieldset>
                                 <input type="text" placeholder="Nombre de usuario">

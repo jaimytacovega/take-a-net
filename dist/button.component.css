@@ -9,6 +9,7 @@ a, button{
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
 }
 
 :is(.btn-primary, .btn-bordered){

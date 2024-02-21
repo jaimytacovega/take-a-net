@@ -9,9 +9,24 @@
     "src": "src/components/_global/global.component.css",
     "isEntry": true
   },
+  "src/components/breadcrumb/breadcrumb.component.css": {
+    "file": "breadcrumb.component.css",
+    "src": "src/components/breadcrumb/breadcrumb.component.css",
+    "isEntry": true
+  },
   "src/components/button/button.component.css": {
     "file": "button.component.css",
     "src": "src/components/button/button.component.css",
+    "isEntry": true
+  },
+  "src/components/card/card-table.component.css": {
+    "file": "card-table.component.css",
+    "src": "src/components/card/card-table.component.css",
+    "isEntry": true
+  },
+  "src/components/card/card-user.component.css": {
+    "file": "card-user.component.css",
+    "src": "src/components/card/card-user.component.css",
     "isEntry": true
   },
   "src/components/card/card.component.css": {
@@ -27,6 +42,11 @@
   "src/components/main/main.component.css": {
     "file": "main.component.css",
     "src": "src/components/main/main.component.css",
+    "isEntry": true
+  },
+  "src/components/table/table.component.css": {
+    "file": "table.component.css",
+    "src": "src/components/table/table.component.css",
     "isEntry": true
   }
 }

@@ -1,18 +1,22 @@
 import * as LoginRoute from '@scripts/routes/login.route'
 import * as RecoverPasswordRoute from '@scripts/routes/recover-password.route'
 import * as RecoverPasswordSentRoute from '@scripts/routes/recover-password-sent.route'
+import * as UsersRoute from '@scripts/routes/users.route'
 
 
 const urlPatterns = {
     Login: '/login',
     RecoverPassword: '/recuperar-contrasena',
     RecoverPasswordSent: '/recuperar-contrasena-enviado',
+
+    Users: '/admin/usuarios'
 }
 
 const router = new Map()
 router.set(urlPatterns.Login, LoginRoute)
 router.set(urlPatterns.RecoverPassword, RecoverPasswordRoute)
 router.set(urlPatterns.RecoverPasswordSent, RecoverPasswordSentRoute)
+router.set(urlPatterns.Users, UsersRoute)
 
 const forbiddenURLs = [
     'cloudflare.worker.js',

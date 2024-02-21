@@ -3,6 +3,7 @@
     --color-black: #2A3B47;
     --color-gray-1: #f3f4f6;
     --color-gray-2: #bec5d1;
+    --color-gray-3: #2b3a47;
     --color-blue-1: #0321B4;
 
     --box-shadow-1: 0px 3px 8px #03274A26;
@@ -16,7 +17,10 @@
     --font-size-min: 12px;
     --font-size-h1: 3.5em;
     --font-size-h3: 1.5em;
+    --font-size-h4: 1.3em;
     --font-size-p: 1.1em;
+
+    --aside-inline-size: 240px;
 }
 
 *{
@@ -74,10 +78,26 @@ h3{
     font: var(--font-size-h3)/1.2 var(--font-family-raleway-regular);
 }
 
+h4{
+    font: var(--font-size-h4)/1.2 var(--font-family-raleway-semibold);
+}
+
 p{
     font: var(--font-size-p)/1.2 var(--font-family-raleway-regular);
 }
 
 * > strong{
     font-family: var(--font-family-raleway-bold);
+}
+
+select{
+    min-inline-size: 180px;
+    appearance: none;
+    background-image: url('/img/icon/chevron-down-blue-1.svg');
+    background-repeat: no-repeat;
+    background-position: calc(100% - 12px) center;
+    background-size: 16px 16px;
+    padding-inline: 24px !important;
+    padding-block: 12px !important;
+    border-radius: 6px;
 }
