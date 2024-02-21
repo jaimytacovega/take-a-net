@@ -1,0 +1,47 @@
+main.auth-main{
+    inline-size: 100svw;
+    block-size: 100svh;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: start;
+}
+
+main.auth-main > .content{  
+    inline-size: 50%;
+    padding-block: 10% 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main.auth-main > .content > .card{
+    inline-size: 50%;
+}
+
+main.auth-main > .thumbnail{
+    position: relative;
+    inline-size: 50%;
+    block-size: 100%;
+    padding-inline: 56px;
+    padding-block: 15% 56px;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: start;
+    gap: 20px;
+}
+
+main.auth-main > .thumbnail > img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    background: var(--color-blue-1);
+    z-index: 1;
+}
+
+main.auth-main > .thumbnail > :not(img){
+    color: var(--color-white);
+    max-inline-size: 60%;
+    z-index: 2;
+}

@@ -1,0 +1,41 @@
+a, button{
+    font: var(--font-size-p)/1.2 var(--font-family-raleway-regular);
+    text-decoration: none;
+    border: none;
+    background: none;
+}
+
+.btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:is(.btn-primary, .btn-bordered){
+    font-family: var(--font-family-raleway-semibold);
+    border-radius: 6px;
+    padding-inline: 12px;
+    padding-block: 8px;
+    border: 1px solid transparent;
+    min-block-size: 48px;
+}
+
+.btn-bordered{
+    border: 1px solid;
+}
+
+.btn-bordered-blue-1{
+    border: 1px solid var(--color-blue-1);
+    color: var(--color-blue-1);
+}
+
+.btn-primary-blue-1{
+    color: var(--color-white);
+    background: var(--color-blue-1);
+    border: 1px solid var(--color-blue-1);
+}
+
+.btn-blue-1{
+    color: var(--color-blue-1);
+    font-family: var(--font-family-raleway-semibold);
+}

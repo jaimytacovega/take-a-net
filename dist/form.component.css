@@ -1,0 +1,75 @@
+form{
+    inline-size: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 12px 24px;
+}
+
+fieldset{
+    inline-size: 100%;
+    border: none;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: 4px;
+}
+
+fieldset > fieldset{
+    flex: 1;
+}
+
+label{
+    font: var(--font-size-p)/1.2 var(--font-family-raleway-regular);
+    cursor: pointer;
+}
+
+input{
+    font: var(--font-size-p)/1.2 var(--font-family-raleway-regular);
+    accent-color: var(--color-blue-1);
+}
+
+input:is([type="text"], [type="password"]){
+    border: 1px solid var(--color-gray-2);
+    border-radius: 6px;
+    padding-inline: 12px;
+    padding-block: 8px;
+    min-block-size: 48px;
+}
+
+input:is([type="checkbox"]){
+    inline-size: 2ch;
+    block-size: 2ch;
+    cursor: pointer;
+}
+
+fieldset > input:is([type="text"]){
+    inline-size: 100%;
+}
+
+fieldset:has(:is([type="password"])){
+    border: 1px solid var(--color-gray-2);
+    border-radius: 6px;
+    padding-inline: 0 12px;
+    gap: 12px;
+}
+
+fieldset:has(:is([type="password"])) > input[type="password"]{
+    border: none;
+    flex: 1;
+}
+
+fieldset:has(:is([type="submit"])){
+    padding-block: 0 12px;
+}
+
+fieldset:has(:is([type="submit"], .form-submit)) > :is(button[type="submit"], .form-submit){
+    inline-size: 100%;
+}
+
+form > header{
+    inline-size: 100%;
+    text-align: center;
+    padding-block: 0 24px;
+    display: flex;flex-flow: column wrap;
+    gap: 8px;
+}

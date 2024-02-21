@@ -1,13 +1,26 @@
 {
-  "name": "take-a-net",
-  "version": "1.0.0",
-  "main": "index.js",
-  "devDependencies": {},
-  "scripts": {
-    "start": "node run.mjs"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+    "name": "take-a-net",
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "watch:dev": "ENV=dev vite build --watch",
+        "watch:qa": "ENV=qa vite build --watch",
+        "build:dev": "ENV=dev vite build",
+        "build:qa": "ENV=qa vite build",
+        "build:prod": "ENV=prod vite build",
+        "local:dev": "wrangler dev --env=dev",
+        "local:qa": "wrangler dev --env=qa",
+        "local:prod": "wrangler dev --env=prod --remote",
+        "deploy:dev": "npm run build:dev && wrangler deploy --env=dev",
+        "deploy:qa": "npm run build:qa && wrangler deploy --env=qa",
+        "deploy:prod": "npm run build:prod && wrangler deploy --env=prod"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@cloudflare/kv-asset-handler": "^0.3.1",
+        "urlpattern-polyfill": "^10.0.0",
+        "vite": "^5.1.3",
+        "vite-jsconfig-paths": "^2.0.1"
+    }    
 }

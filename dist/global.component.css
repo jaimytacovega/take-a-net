@@ -1,0 +1,83 @@
+:root{
+    --color-white: #fbfbfe;
+    --color-black: #2A3B47;
+    --color-gray-1: #f3f4f6;
+    --color-gray-2: #bec5d1;
+    --color-blue-1: #0321B4;
+
+    --box-shadow-1: 0px 3px 8px #03274A26;
+
+    --font-family-noto-regular: NotoSans-Regular, sans-serif;
+
+    --font-family-raleway-bold: Raleway-Bold, sans-serif;
+    --font-family-raleway-semibold: Raleway-SemiBold, sans-serif;
+    --font-family-raleway-regular: Raleway-Regular, sans-serif;
+
+    --font-size-min: 12px;
+    --font-size-h1: 3.5em;
+    --font-size-h3: 1.5em;
+    --font-size-p: 1.1em;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    margin-inline: 0;
+    margin-block: 0;
+    padding-inline: 0;
+    padding-block: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: NotoSans-Bold;
+    src: url(/fonts/notosans/NotoSans-Bold.ttf) format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: NotoSans-Regular;
+    src: url(/fonts/notosans/NotoSans-Regular.ttf) format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: Raleway-Bold;
+    src: url(/fonts/raleway/Raleway-Bold.ttf) format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: Raleway-SemiBold;
+    src: url(/fonts/raleway/Raleway-SemiBold.ttf) format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: Raleway-Regular;
+    src: url(/fonts/raleway/Raleway-Regular.ttf) format('truetype');
+    font-display: swap;
+}
+
+body{
+    font: var(--font-size-min)/1.2 var(--font-family-raleway-regular);
+    background: var(--color-gray-1);
+    color: var(--color-black);
+    block-size: 100svh;
+}
+
+h1{
+    font: var(--font-size-h1)/1.2 var(--font-family-raleway-semibold);
+}
+
+h3{
+    font: var(--font-size-h3)/1.2 var(--font-family-raleway-regular);
+}
+
+p{
+    font: var(--font-size-p)/1.2 var(--font-family-raleway-regular);
+}
+
+* > strong{
+    font-family: var(--font-family-raleway-bold);
+}

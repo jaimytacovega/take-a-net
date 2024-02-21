@@ -1,0 +1,17 @@
+.card-white{
+    box-shadow: var(--box-shadow-1);
+    border-radius: 15px;
+    padding-inline: 24px;
+    padding-block: 24px;
+    background: var(--color-white);
+}
+
+.card-auth{
+    max-inline-size: 360px;
+    padding-block: 72px;
+    padding-inline: 32px;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    gap: 48px;
+}
