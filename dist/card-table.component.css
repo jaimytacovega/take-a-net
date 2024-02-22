@@ -1,0 +1,25 @@
+.card-table{
+    inline-size: 100%;
+    padding-inline: 32px;
+    padding-block: 32px;
+    display: flex;
+    flex-flow: column wrap;
+    gap: 24px;
+}
+
+.card-table > header{
+    inline-size: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.card-cell{
+    inline-size: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}

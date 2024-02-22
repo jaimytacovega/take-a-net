@@ -1,0 +1,25 @@
+.card-user{
+    inline-size: 100%;
+    padding-inline: 48px;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.card-user > img{
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+}
+
+.card-user > .content{
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    gap: 4px;
+}
+
+.card-user > button{
+    inline-size: 100%;
+}

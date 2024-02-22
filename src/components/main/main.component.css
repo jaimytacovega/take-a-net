@@ -49,18 +49,23 @@ main.auth-main > .thumbnail > :not(img){
 main.admin-main{
     inline-size: 100svw;
     block-size: 100svh;
+    padding-inline: 0 72px;
+    padding-block: 24px 48px;
     display: grid;
     grid-template-columns: minmax(0, var(--aside-inline-size)) minmax(0, 1fr);
     grid-template-rows: minmax(0, auto) minmax(0, 1fr);
+    gap: 24px 0;
 }
 
 main.admin-main > header{
-    padding-inline: 24px 72px;
-    padding-block: 24px;
-    grid-column: 1 / span 2;
+    /* padding-inline: 24px 72px;
+    padding-block: 24px; */
+    grid-column: 2 / span 1;
     grid-row: 1 / span 1;
     display: flex;
     flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
 }
 
 main.admin-main > header > .admin-home{
@@ -72,7 +77,6 @@ main.admin-main > header > .admin-home{
 }
 
 main.admin-main > header > .admin-actions{
-    flex: 1;
     display: flex;
     flex-flow: row wrap;
     place-items: center;
@@ -81,13 +85,31 @@ main.admin-main > header > .admin-actions{
 }
 
 main.admin-main > aside{
+    padding-block: 24px 0;
+    grid-column: 1 / span 1;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-flow: column wrap;
+    gap: 48px;
+}
+
+main.admin-main > aside .admin-home{
     padding-inline: 24px;
-    padding-block: 24px;
+}
+
+main.admin-main > aside > .admin-nav{
+    inline-size: 100%;
+}
+
+main.admin-main > aside > .admin-nav :is(a, button){
+    inline-size: 100%;
+    border-radius: 0;
+    padding-block: 12px;
 }
 
 main.admin-main > .content{
-    padding-inline: 24px 72px;
-    padding-block: 24px;
+    grid-column: 2 / span 1;
+    grid-row: 2 / span 1;
     display: flex;
     flex-flow: column wrap;
     gap: 12px;
@@ -99,4 +121,8 @@ main.admin-main > .content > header{
     flex-flow: row wrap;
     align-items: center;
     justify-content: space-between;
+}
+
+main.admin-main > .content > .card-table{
+    flex: 1;
 }
