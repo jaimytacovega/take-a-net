@@ -8,8 +8,9 @@ let password = '1234abc'
 let token = await login({ username, password })
 console.log({ username, token })
 
-// // runs properly
-// let users = await getAll({ token })
+// runs properly
+let users = await getAll({ token })
+console.log({ users })
 // console.log({ users: users?.map((user) => user?.username) })
 
 // // runs properly

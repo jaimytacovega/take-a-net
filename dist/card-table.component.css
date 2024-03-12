@@ -15,6 +15,10 @@
     gap: 12px;
 }
 
+.card-table > .content{
+    flex: 1;
+}
+
 .card-cell{
     inline-size: 100%;
     display: flex;

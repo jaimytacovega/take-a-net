@@ -19,15 +19,19 @@ const getRoute = async ({ request, env }) => {
                 <div class="content">
                     <div class="card-auth card-white">
                         <img src="/img/logo/take-a-net-logo.svg" width="200" height="30" alt="take a net">
-                        <form>
+                        <form
+                            on-submit="login-form_submit.action"
+                        >
                             <fieldset>
-                                <input type="text" placeholder="Nombre de usuario">
+                                <input id="username" type="text" placeholder="Nombre de usuario" autocomplete="username" required>
                             </fieldset>
                             <fieldset>
-                                <input type="password" placeholder="Contraseña">
+                                <input id="password" type="password" data-input-password placeholder="Contraseña" autocomplete="current-password" required>
                                 <button 
                                     class="btn" 
-                                    type="button"
+                                    type="button" 
+
+                                    on-click="show-password-btn_click.action"
                                 >
                                     <img src="/img/icon/eye-blue-1.svg" width="20" height="20" alt="mostrar contraseña">
                                 </button>
@@ -42,7 +46,7 @@ const getRoute = async ({ request, env }) => {
                                     <input type="checkbox" id="remember-me">
                                     <label for="remember-me">Recordarme</label>
                                 </fieldset>
-                                <a class="btn-blue-1" href="/recuperar-contraseña">Has olvidado tu contraseña?</a>
+                                <a class="btn-blue-1" href="/recuperar-contrasena">Has olvidado tu contraseña?</a>
                             </fieldset>
                         </form>
                     </div>

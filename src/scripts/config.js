@@ -8,8 +8,7 @@ const urlPatterns = {
     Login: '/login',
     RecoverPassword: '/recuperar-contrasena',
     RecoverPasswordSent: '/recuperar-contrasena-enviado',
-
-    Users: '/admin/usuarios'
+    Users: '/admin/usuarios',
 }
 
 const router = new Map()

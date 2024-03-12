@@ -16,7 +16,7 @@ const handleFetch = async ({ request, env, ctx }) => {
 	if (forbiddenResult?.response) return forbiddenResult.response
 
 	const pageCallback = router?.get(pattern?.pathname)?.getRoute
-	const pageResult = pageCallback ? await pageCallback({ request, pattern, env }) : null
+	const pageResult = pageCallback ? await pageCallback({ request, url, pattern, env }) : null
 	if (pageResult?.response) return pageResult.response
 
 	const staticResult = await CloudflareLib.getStaticResponse({ request, waitUntil: ctx.waitUntil.bind(ctx), env })

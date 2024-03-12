@@ -3,6 +3,7 @@ a, button{
     text-decoration: none;
     border: none;
     background-color: unset;
+    cursor: pointer;
 }
 
 .btn{
@@ -109,4 +110,32 @@ a, button{
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
+}
+
+.btn-status{
+    font-family: var(--font-family-raleway-semibold);
+    justify-content: start;
+}
+
+.btn-status::before{
+    content: '';
+    inline-size: 1.5ch;
+    block-size: 1.5ch;
+    border-radius: 50%;
+}
+
+.btn-status[data-active]{
+    color: var(--color-green-1);
+}
+
+.btn-status[data-inactive]{
+    color: var(--color-gray-5);
+}
+
+.btn-status[data-active]::before{
+    background: var(--color-green-1);
+}
+
+.btn-status[data-inactive]::before{
+    background: var(--color-gray-5);
 }

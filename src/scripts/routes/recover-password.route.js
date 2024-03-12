@@ -19,13 +19,15 @@ const getRoute = async ({ request, env }) => {
                 <div class="content">
                     <div class="card-auth card-white">
                         <img src="/img/logo/take-a-net-logo.svg" width="200" height="30" alt="take a note">
-                        <form>
+                        <form
+                            on-submit="recover-password-form_submit.action"
+                        >
                             <header>
                                 <h3>Has olvidado tu contraseña?</h3>
                                 <p>Introduce tu correo electrónico<br> y recupera tu cuenta.</p>
                             </header> 
                             <fieldset>
-                                <input type="text" placeholder="Nombre de usuario">
+                                <input id="email" type="text" placeholder="E-mail" autocomplete="email" required>
                             </fieldset>
                             <fieldset>
                                 <button 

@@ -5,9 +5,14 @@
     --color-gray-2: #bec5d1;
     --color-gray-3: #2b3a47;
     --color-gray-4: #d5d9dc;
+    --color-gray-5: #8e98a0;
     --color-blue-1: #0321B4;
     --color-blue-2: #0478f3;
     --color-orange-1: #ff8802;
+    --color-green-1: #00c292;
+    --color-red-1: #ff0850;
+    --color-red-2: #ffe6ed;
+
 
     --box-shadow-1: 0px 3px 8px #03274A26;
 
@@ -19,6 +24,7 @@
 
     --font-size-min: 12px;
     --font-size-h1: 3.5em;
+    --font-size-h2: 2em;
     --font-size-h3: 1.5em;
     --font-size-h4: 1.3em;
     --font-size-p: 1.1em;
@@ -26,7 +32,7 @@
     --aside-inline-size: 240px;
 }
 
-*{
+*, ::before, :active{
     margin: 0;
     padding: 0;
     margin-inline: 0;
@@ -75,6 +81,10 @@ body{
 
 h1{
     font: var(--font-size-h1)/1.2 var(--font-family-raleway-semibold);
+}
+
+h2{
+    font: var(--font-size-h2)/1.2 var(--font-family-raleway-semibold);
 }
 
 h3{

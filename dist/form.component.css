@@ -1,8 +1,14 @@
 form{
     inline-size: 100%;
-    display: flex;
-    flex-flow: row wrap;
+    /* display: flex;
+    flex-flow: row wrap; */
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 12px 24px;
+}
+
+form.col-2{
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
 
 fieldset{
@@ -20,6 +26,7 @@ fieldset > fieldset{
 
 label{
     font: var(--font-size-p)/1.2 var(--font-family-raleway-regular);
+    inline-size: 100%;
     cursor: pointer;
 }
 
@@ -28,7 +35,7 @@ input{
     accent-color: var(--color-blue-1);
 }
 
-input:is([type="text"], [type="password"]){
+input:is([type="text"], [data-input-password]){
     border: 1px solid var(--color-gray-2);
     border-radius: 6px;
     padding-inline: 12px;
@@ -36,24 +43,58 @@ input:is([type="text"], [type="password"]){
     min-block-size: 48px;
 }
 
-input:is([type="checkbox"]){
+input:is([type="checkbox"], [type="radio"]){
     inline-size: 2ch;
     block-size: 2ch;
     cursor: pointer;
 }
 
-fieldset > input:is([type="text"]){
-    inline-size: 100%;
+form.col-2 > fieldset:has(input[type="file"]) ~ fieldset{
+    align-self: start;
 }
 
-fieldset:has(:is([type="password"])){
+input:is([type="checkbox"], [type="radio"]) ~ label{
+    inline-size: auto;
+    padding-inline: 0 24px;
+}
+
+input:is([type="file"]){
+    display: none;
+}
+
+input:is([type="file"]) ~ label{
+    position: relative;
+    inline-size: 84px;
+    block-size: 84px;
+    border-radius: 50%;
+    background: var(--color-gray-2);
+}
+
+input:is([type="file"]) ~ label::before{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    inline-size: 20px;
+    block-size: 20px;
+    background-image: url(/img/icon/edit-gray-3.svg);
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+}
+
+fieldset > input:is([type="text"]){
+    flex: 1;
+}
+
+fieldset:has(:is([data-input-password])){
     border: 1px solid var(--color-gray-2);
     border-radius: 6px;
     padding-inline: 0 12px;
     gap: 12px;
 }
 
-fieldset:has(:is([type="password"])) > input[type="password"]{
+fieldset:has(:is([data-input-password])) > input[data-input-password]{
     border: none;
     flex: 1;
 }
@@ -62,8 +103,18 @@ fieldset:has(:is([type="submit"])){
     padding-block: 0 12px;
 }
 
+form.col-2 > fieldset:has(:is([type="submit"])){
+    padding-block: 12px 0;
+    justify-content: end;
+    grid-column: span 2;
+}
+
 fieldset:has(:is([type="submit"], .form-submit)) > :is(button[type="submit"], .form-submit){
     inline-size: 100%;
+}
+
+form.col-2 > fieldset:has(:is([type="submit"], .form-submit)) > :is(button[type="submit"], .form-submit){
+    inline-size: auto;
 }
 
 form > header{
@@ -76,4 +127,67 @@ form > header{
 
 form :is(.btn-primary, .btn-bordered){
     min-block-size: 48px;
+}
+
+:is(form, fieldset).is-invalid{
+    position: relative;
+}
+
+:is(form, fieldset).is-invalid::before{
+    content: attr(data-invalid);
+    font: var(--font-size-min)/1.2 var(--font-family-raleway-semibold);
+    inline-size: 100%;
+    color: var(--color-red-1);
+    border: 1px solid var(--color-red-1);
+    border-radius: 6px;
+    background: var(--color-red-2);
+    padding-inline: 38px 12px;
+    padding-block: 8px;
+    min-block-size: 48px;
+    display: flex;
+    align-items: center;
+}
+
+form.col-2.is-invalid::before{
+    grid-column: span 2;
+}
+
+:is(form, fieldset).is-invalid::after{
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 12px;
+    inline-size: 20px;
+    block-size: 20px;
+    background-image: url(/img/icon/alert-octagon-red-1.svg);
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+}
+
+.form-loading{
+    position: relative;
+    color: transparent !important;
+}
+
+.form-loading:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 2ch;
+    height: 2ch;
+    border-radius: 50%;
+    border: 4px solid rgb(255 255 255 / 25%);
+    border-top-color: var(--color-white);
+    animation: form-loading-anim 1.5s linear infinite;
+}
+
+@keyframes form-loading-anim {
+    0% {
+      rotate: 0deg;
+    }
+    100% {
+      rotate: 360deg;
+    }
 }

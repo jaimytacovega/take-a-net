@@ -1,19 +1,24 @@
 import * as WorkerLib from '@scripts/lib/worker.lib'
 
 
-const fetch = async ({ url, options }) => {
+const fetch = async ({ url, ...options }) => {
     try {
-        const fetchResult = await WorkerLib.fetch({ url, options })
+        const fetchResult = await WorkerLib.fetch({ url, ...options })
         if (fetchResult?.err) return fetchResult
     
         const response = fetchResult?.response
-        if (!response.ok) throw response?.statusText
+        const responseStatus = response.ok ? [] : [response?.statusText || response?.status]
+        if (!response.ok) throw responseStatus
 
         const json = await response.json()
-        if (json?.status !== 'success') throw json?.messages ?? json
+        const messages = json?.messages
 
+        if (json?.status !== 'success') throw [...responseStatus, ...messages]
+        
         const data = json?.data
-        return { data }
+        if (!data && messages?.length) throw [...responseStatus, ...messages]
+
+        return { data, messages }
     } catch (err) {
         return { err }
     }

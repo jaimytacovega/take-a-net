@@ -1,10 +1,20 @@
 table{
     inline-size: 100%;
+    block-size: 100%;
     border-collapse: collapse;
+
+    display: flex;
+    flex-flow: column nowrap;
 }
 
 tbody{
     border: 1px solid var(--color-gray-1);
+
+    display: block;
+    /* max-height: 200px; */
+    max-block-size: 370px;
+    overflow-y: auto;
+    flex: 1;
 }
 
 th, td{
@@ -12,9 +22,19 @@ th, td{
     /* padding-inline: 24px;
     padding-block: 12px; */
 }
+tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
 
 tbody > tr > td {
     border: 1px solid var(--color-gray-2);
+    padding-inline: 12px;
+    padding-block: 12px;
+}
+
+tbody > tr > td:active{
     padding-inline: 12px;
     padding-block: 12px;
 }
@@ -25,4 +45,8 @@ tbody > tr:nth-child(2n+1) > td:nth-child(2n){
 
 tbody > tr:nth-child(2n) > td:nth-child(2n+1){
     background: var(--color-gray-1);
+}
+
+:is(th, td).col-actions{
+    inline-size: 280px;
 }

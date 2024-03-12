@@ -11,6 +11,7 @@
     border-radius: 50%;
     object-fit: cover;
     object-position: top;
+    border: 1.5px solid var(--color-blue-1);
 }
 
 .card-user > .content{

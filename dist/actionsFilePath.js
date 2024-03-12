@@ -1,4 +1,3 @@
-var __freeze = Object.freeze;
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => {
@@ -27,338 +26,22 @@ var __privateMethod = (obj, member, method) => {
   __accessCheck(obj, member, "access private method");
   return method;
 };
-var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(raw || cooked.slice()) }));
-var _i, _n, _t, _e, _s, _l, _o, _d, _p, _g, _r, r_fn, _R, R_fn, _b, b_fn, _u, u_fn, _m, m_fn, _a, a_fn, _P, P_fn, _E, E_fn, _S, S_fn, _O, O_fn, _k, k_fn, _x, x_fn, _h, h_fn, _f, f_fn, _T, T_fn, _A, A_fn, _y, y_fn, _w, w_fn, _c, c_fn, _C, C_fn, _a2, _i2, _n2, _t2, _e2, _s2, _l2, _b2, _a3;
-const executeOnScheduler = async ({ callback, signal, priority }) => {
-  var _a4;
-  try {
-    if (!((_a4 = self == null ? void 0 : self.scheduler) == null ? void 0 : _a4.postTask))
-      return { data: await callback() };
-    const data = await scheduler.postTask(callback, { priority, signal });
-    return { data };
-  } catch (err) {
-    return { err };
-  }
-};
-const stream$1 = ({ callbacks, headers }) => {
-  const { readable, writable } = new TransformStream();
-  const done = (async () => {
-    var _a4;
-    for (const callback of callbacks) {
-      const abortController = new AbortController();
-      const executeOnSchedulerResult = await executeOnScheduler({ callback, signal: abortController.signal, priority: "background" });
-      const html2 = (executeOnSchedulerResult == null ? void 0 : executeOnSchedulerResult.err) ?? (executeOnSchedulerResult == null ? void 0 : executeOnSchedulerResult.data);
-      const response = new Response(html2, { headers, status: 200 });
-      await ((_a4 = response.body) == null ? void 0 : _a4.pipeTo(writable, { preventClose: true }));
-      abortController.abort();
-    }
-    writable.getWriter().close();
-  })();
-  return {
-    done,
-    response: new Response(readable, { headers })
-  };
-};
-const fetch = async ({ url, request, ...config }) => {
-  var _a4;
-  try {
-    const response = await ((_a4 = self == null ? void 0 : self.fetch(url || request, config)) == null ? void 0 : _a4.catch((err) => ({ err })));
-    if (response == null ? void 0 : response.err)
-      return response;
-    return { response };
-  } catch (err) {
-    return { err };
-  }
-};
-const X6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  fetch,
-  stream: stream$1
-}, Symbol.toStringTag, { value: "Module" }));
-const Scope = {
-  Cloudflare: "cloudflare-worker",
-  ServiceWorker: "service-worker",
-  Window: "window"
-};
-const isWindow = () => typeof window === "object";
-const isServiceWorker = ({ env }) => !env && typeof ServiceWorkerGlobalScope !== "undefined";
-const isCloudflareWorker = ({ env }) => env == null ? void 0 : env.IS_CLOUDFLARE_WORKER;
-const getScope = ({ env }) => {
-  if (isCloudflareWorker({ env }))
-    return Scope.Cloudflare;
-  if (isServiceWorker({ env }))
-    return Scope.ServiceWorker;
-  if (isWindow())
-    return Scope.Window;
-};
-const getEnv = ({ env }) => {
-  var _a4;
-  if (isCloudflareWorker({ env }))
-    return env.ENV;
-  if (isServiceWorker({ env }))
-    return "dev";
-  if (isWindow())
-    return (_a4 = document == null ? void 0 : document.body) == null ? void 0 : _a4.getAttribute("data-env");
-};
-const isDevEnv = ({ env }) => {
-  return getEnv({ env }) === "dev";
-};
-const X5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  getEnv,
-  getScope,
-  isDevEnv
-}, Symbol.toStringTag, { value: "Module" }));
-const html = (s, ...args) => s == null ? void 0 : s.map((ss, i) => `${ss}${args[i] !== void 0 ? args[i] : ""}`).join("");
-const LISTENER_SCRIPT = html(_a3 || (_a3 = __template([`
-    <script defer>
-        (() => {
-            const addListener = ({ srcElement, event, callbacks }) => {
-                srcElement?.addEventListener(event, (e) => {
-                    executeCallbacks({ e, srcElement, callbacks })
-                })
-            }
-
-            const executeCallbacks = ({ e, srcElement, callbacks }) => {
-                callbacks?.forEach((callback) => {
-                    if (callback) callback({ e, srcElement })
-                })
-            }
-
-            const getCallbackInModule = ({ customModule, event }) => {
-                if (!customModule) return null
-                if (customModule[event]) return customModule[event]
-                const prev = Object.keys(customModule)?.find((key) => customModule[key][event])
-                if (!prev) return null
-                return customModule[prev][event]
-            }
-
-            const getSrcElement = ({ srcElement, event }) => {
-                const attribute = 'on-' + event
-                const hasActionStarter = srcElement?.hasAttribute(attribute)
-                if (hasActionStarter) return srcElement
-
-                const query = ':is(a, button, li)[' + attribute + ']'
-                const closestButton = srcElement?.closest(query)
-                if (closestButton) return closestButton
-
-                return srcElement
-            }
-
-            const fetchListener = async ({ srcElement, event, e }) => {
-                const starter = srcElement?.getAttribute('on-' + event)
-                if (!starter) return
-
-                if (starter && ['submit'].includes(event)) e.preventDefault()
-
-                const helpers = await Promise.all(
-                    starter?.split(',')?.map((helperName) => {
-                        const toImport = '/' + helperName?.trim() + '.js'
-                        return import(toImport)?.catch((err) => { })
-                    })
-                )
-
-                const callbacks = helpers?.map((helper) => getCallbackInModule({ customModule: helper, event }))
-
-                if (['load', 'click', 'submit'].includes(event)) executeCallbacks({ e, srcElement, callbacks })
-                if (['invalid', 'click', 'submit'].includes(event)) addListener({ srcElement, event, callbacks })
-                srcElement?.removeAttribute('on-' + event)
-            }
-
-            // load
-            const configLoad = () => {
-                const event = 'load'
-                const srcElements = document?.querySelectorAll('[on-' + event + ']')
-                //console.log('--- srcElements load =', srcElements)
-
-                srcElements?.forEach(async (srcElement) => {
-                    fetchListener({ srcElement, event, e: null })
-                })
-            }
-
-            // invalid
-            const configInvalid = () => {
-                const event = 'invalid'
-                const srcElements = document?.querySelectorAll('[on-' + event + ']')
-                //console.log('--- srcElements invalid =', srcElements)
-
-                srcElements?.forEach(async (srcElement) => {
-                    fetchListener({ srcElement, event, e: null })
-                })
-            }
-
-            // event-listeners
-            const configEventListeners = () => {
-                ['mouseover', 'click', 'submit']?.forEach((event) => document.body['on' + event] = async (e) => {
-                    /*
-                    if (['mouseover', 'click'].includes(event)){
-                        await addScripts()     
-                
-                        configLoad()
-                        configInvalid()
-                        configObservers()
-                    }
-                    */
-
-                    const srcElement = getSrcElement({ srcElement: e.srcElement, event })
-                    fetchListener({ srcElement, event, e })
-                })
-            }
-
-            // observers
-            const configObservers = () => {
-                const srcElements = [...document.querySelectorAll('[on-observe]')]
-                //console.log('--- srcElements observer =', srcElements)
-                
-                const uniqueStarters = [...srcElements?.reduce((acc, srcElement) => {
-                    const starters = srcElement?.getAttribute('on-observe')?.split(',')
-                    starters?.forEach((starter) => acc?.set(starter, 1))
-                    return acc
-                }, new Map())?.keys()]
-
-                uniqueStarters?.forEach(async (starter) => {
-                    const starterElements = document.querySelectorAll('[on-observe*="' + starter + '"]')
-
-                    const helper = await import('/' + starter?.trim() + '.js')?.catch((err) => { })
-                    const callback = getCallbackInModule({ customModule: helper, event: 'observe' })
-                    if (!callback) return
-
-                    const observer = new IntersectionObserver((entries) => {
-                        entries.forEach((entry) => callback({ entry, observer }))
-                    })
-
-                    starterElements?.forEach((starterElement) => {
-                        observer.observe(starterElement)
-
-                        const observerAttr = starterElement?.getAttribute('on-observe') ?? ''
-                        const updatedObserverAttr = observerAttr?.replaceAll(starter + ', ', '')?.replaceAll(', ' + starter, '')?.replaceAll(starter, '') ?? ''
-
-                        if (updatedObserverAttr === '') starterElement.removeAttribute('on-observe')
-                        else starterElement.setAttribute('on-observe', updatedObserverAttr)
-                    })
-                })
-            }
-
-            const loadScript = ({ id, attrs, content }) => {
-                const script = document?.createElement('script')
-
-                Object.keys(attrs)?.forEach((attrKey) => script?.setAttribute(attrKey, attrs[attrKey]))
-                script.id = id
-
-                if (content) script?.insertAdjacentHTML('beforeend', content)
-
-                return new Promise((resolve, reject) => {
-                    if (!attrs.src) {
-                        resolve()
-                        document?.body?.insertAdjacentElement('beforeend', script)
-                        return
-                    }
-
-                    script.onload = script.onreadystatechange = function () {
-                        if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
-                            resolve()
-                            script.onload = script.onreadystatechange = null
-                        }
-                    }
-
-                    script.onerror = () => {
-                        console.log('--- script failed to load')
-                        reject(new Error('Failed to load script with src ' + script.src))
-                    }
-
-                    document?.body?.insertAdjacentElement('beforeend', script)
-                })
-            }
-
-            const addScripts = () => {
-                const scriptsToLoad = [...document.querySelectorAll('script[data-script-to-load]')]
-                return Promise.all(
-                    scriptsToLoad?.map((scriptToLoad) => {
-                        const id = scriptToLoad?.getAttribute('data-script-to-load')
-                        scriptToLoad.removeAttribute('data-script-to-load')
-
-                        const attrs = scriptToLoad?.getAttributeNames()?.reduce((acc, attrName) => {
-                            const attrValue = scriptToLoad.getAttribute(attrName)
-                            if (attrValue !== 'text/script-to-load') acc[attrName] = attrValue
-                            return acc
-                        }, {})
-
-                        const content = scriptToLoad?.textContent
-
-                        return loadScript({ id, attrs, content }).catch((err) => {
-                            console.error(err)
-                        })
-                    })
-                )
-            }
-
-            configEventListeners()
-
-            /*
-            window.onload = async () => {
-                await addScripts()     
-                
-                configLoad()
-                configInvalid()
-                configObservers()
-            }
-            */
-
-            
-            window.onload = async () => {
-                const customLoadEventName = 'my-custom-load'
-                const customLoadEvent = new Event(customLoadEventName)
-
-                document?.body?.addEventListener(customLoadEventName, async () => {
-
-                    await addScripts()     
-                
-                    configLoad()
-                    configInvalid()
-                    configObservers()
-                })
-
-                document.body.dispatchEvent(customLoadEvent)
-            }
-            
-        })()
-    <\/script>
-`])));
-const stream = ({ head, body, scripts, env }) => {
-  const headers = new Headers();
-  headers.append("Content-Type", "text/html;charset=UTF-8");
-  const callbacks = [
-    () => html`
-            <!DOCTYPE html>
-            <html lang="es">
-            <head>
-        `,
-    head,
-    () => html`
-            </head>
-            <body 
-                data-scope=${getScope({ env })}" 
-                data-env=${getEnv({ env })}"
-            >
-        `,
-    body,
-    () => html`
-            ${LISTENER_SCRIPT}
-            ${isDevEnv({ env }) ? "" : SW_REGISTER_SCRIPT}
-        `,
-    scripts ?? (() => ""),
-    () => html`
-            </body>
-            </html>
-        `
-  ];
-  return stream$1({ callbacks, headers });
-};
-const X2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  html,
-  stream
-}, Symbol.toStringTag, { value: "Module" }));
+var _i, _n, _t, _e, _s, _l, _o, _d, _p, _g, _r, r_fn, _R, R_fn, _b, b_fn, _u, u_fn, _m, m_fn, _a, a_fn, _P, P_fn, _E, E_fn, _S, S_fn, _O, O_fn, _k, k_fn, _x, x_fn, _h, h_fn, _f, f_fn, _T, T_fn, _A, A_fn, _y, y_fn, _w, w_fn, _c, c_fn, _C, C_fn, _a2, _i2, _n2, _t2, _e2, _s2, _l2, _b2;
+import { A as A6 } from "./close-crud-dialog-btn_click.action.js";
+import { A as A9 } from "./open-dialog-btn_click.action.js";
+import { A as A10 } from "./open-edit-dialog-btn_click.action.js";
+import { A as A11 } from "./open-remove-dialog-btn_click.action.js";
+import { A as A12 } from "./add-user-form_submit.action.js";
+import { A as A13 } from "./edit-user-form_submit.action.js";
+import { A as A15 } from "./login-form_submit.action.js";
+import { A as A16 } from "./recover-password-form_submit.action.js";
+import { A as A17 } from "./remove-user-form_submit.action.js";
+import { A as A18 } from "./show-password-btn_click.action.js";
+import { A as A19 } from "./admin-main-detail-button_click.action.js";
+import { X as X2, a as X5 } from "./crud-user-dialog.component.js";
+import { f as fetch, X as X6 } from "./worker.lib.js";
+import "./user.model.js";
+import "./auth.helper.js";
 var R = class {
   constructor(t, r, n, o, c, l) {
     __publicField(this, "type", 3);
@@ -829,7 +512,7 @@ var H = (_a2 = class {
     __privateGet(this, _t).hostname !== void 0 && __privateGet(this, _t).port === void 0 && (__privateGet(this, _t).port = "");
   }
 }, _i = new WeakMap(), _n = new WeakMap(), _t = new WeakMap(), _e = new WeakMap(), _s = new WeakMap(), _l = new WeakMap(), _o = new WeakMap(), _d = new WeakMap(), _p = new WeakMap(), _g = new WeakMap(), _r = new WeakSet(), r_fn = function(t, r) {
-  var _a4, _b3, _c2;
+  var _a3, _b3, _c2;
   switch (__privateGet(this, _o)) {
     case 0:
       break;
@@ -860,7 +543,7 @@ var H = (_a2 = class {
       __privateGet(this, _t).hash = __privateMethod(this, _c, c_fn).call(this);
       break;
   }
-  __privateGet(this, _o) !== 0 && t !== 10 && ([1, 2, 3, 4].includes(__privateGet(this, _o)) && [6, 7, 8, 9].includes(t) && ((_a4 = __privateGet(this, _t)).hostname ?? (_a4.hostname = "")), [1, 2, 3, 4, 5, 6].includes(__privateGet(this, _o)) && [8, 9].includes(t) && ((_b3 = __privateGet(this, _t)).pathname ?? (_b3.pathname = __privateGet(this, _g) ? "/" : "")), [1, 2, 3, 4, 5, 6, 7].includes(__privateGet(this, _o)) && t === 9 && ((_c2 = __privateGet(this, _t)).search ?? (_c2.search = ""))), __privateMethod(this, _R, R_fn).call(this, t, r);
+  __privateGet(this, _o) !== 0 && t !== 10 && ([1, 2, 3, 4].includes(__privateGet(this, _o)) && [6, 7, 8, 9].includes(t) && ((_a3 = __privateGet(this, _t)).hostname ?? (_a3.hostname = "")), [1, 2, 3, 4, 5, 6].includes(__privateGet(this, _o)) && [8, 9].includes(t) && ((_b3 = __privateGet(this, _t)).pathname ?? (_b3.pathname = __privateGet(this, _g) ? "/" : "")), [1, 2, 3, 4, 5, 6, 7].includes(__privateGet(this, _o)) && t === 9 && ((_c2 = __privateGet(this, _t)).search ?? (_c2.search = ""))), __privateMethod(this, _R, R_fn).call(this, t, r);
 }, _R = new WeakSet(), R_fn = function(t, r) {
   __privateSet(this, _o, t), __privateSet(this, _l, __privateGet(this, _e) + r), __privateSet(this, _e, __privateGet(this, _e) + r), __privateSet(this, _s, 0);
 }, _b = new WeakSet(), b_fn = function() {
@@ -1151,8 +834,8 @@ const getRedirectResponse = ({ origin, pathname }) => {
   return { response };
 };
 const getNotFoundResponse = async ({ router, request }) => {
-  var _a4, _b3;
-  const pageCallback = (_a4 = router == null ? void 0 : router.get("/404")) == null ? void 0 : _a4.getRoute;
+  var _a3, _b3;
+  const pageCallback = (_a3 = router == null ? void 0 : router.get("/404")) == null ? void 0 : _a3.getRoute;
   const response = pageCallback ? (_b3 = await pageCallback({ request })) == null ? void 0 : _b3.response : new Response("404", { status: 404 });
   return { response };
 };
@@ -1162,8 +845,8 @@ const getForbiddenResponse = ({ origin, request, forbiddenURLs }) => {
   if (origin !== (self == null ? void 0 : self.origin))
     return;
   const isForbidden = forbiddenURLs == null ? void 0 : forbiddenURLs.find((filename) => {
-    var _a4;
-    return (_a4 = request == null ? void 0 : request.url) == null ? void 0 : _a4.endsWith(filename);
+    var _a3;
+    return (_a3 = request == null ? void 0 : request.url) == null ? void 0 : _a3.endsWith(filename);
   });
   if (!isForbidden)
     return;
@@ -1173,8 +856,8 @@ const getServerOnlyResponse = ({ origin, request, serverOnlyURLs }) => {
   if (origin !== (self == null ? void 0 : self.origin))
     return;
   const isServerOnly = serverOnlyURLs == null ? void 0 : serverOnlyURLs.find((filename) => {
-    var _a4;
-    return (_a4 = request == null ? void 0 : request.url) == null ? void 0 : _a4.endsWith(filename);
+    var _a3;
+    return (_a3 = request == null ? void 0 : request.url) == null ? void 0 : _a3.endsWith(filename);
   });
   if (!isServerOnly)
     return;
@@ -1189,6 +872,17 @@ const X4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   getServerOnlyResponse,
   getStaticResponse
 }, Symbol.toStringTag, { value: "Module" }));
+console.log(A6);
+console.log(A9);
+console.log(A10);
+console.log(A11);
+console.log(A12);
+console.log(A13);
+console.log(A15);
+console.log(A16);
+console.log(A17);
+console.log(A18);
+console.log(A19);
 console.log(X1);
 console.log(X2);
 console.log(X3);

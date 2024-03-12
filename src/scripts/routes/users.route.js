@@ -1,8 +1,25 @@
+import * as TableUserRowComponent from '@components/table/table-user.component'
+import * as CrudUserDialog from '@components/dialog/crud-user-dialog.component'
+
+
 import { html, stream } from '@scripts/lib/html.lib'
 
+import * as CookieLib from '@scripts/lib/cookie.lib'
+import * as UserModel from '@scripts/models/user.model'
+import * as AuthHelper from '@scripts/helpers/auth.helper'
 
-const getRoute = async ({ request, env }) => {
-    return stream({
+
+const getRoute = async ({ request, url, env }) => {
+    const credential = await CookieLib.getAutorizationCookie({ request })
+    const token = JSON.parse(credential || '{}')?.token
+
+    const verifyTokenResult = await AuthHelper.verify({ token })
+    if (verifyTokenResult?.err) return { response: Response.redirect(`${url?.origin}/login`) }
+
+    const usersResult = await UserModel.getAll({ token })
+    const users = usersResult?.data || []    
+
+    const streamResult = stream({
         head: () => html`
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +28,8 @@ const getRoute = async ({ request, env }) => {
             <link rel="stylesheet" href="/global.component.css">
             <link rel="stylesheet" href="/main.component.css">
             <link rel="stylesheet" href="/button.component.css">
+            <link rel="stylesheet" href="/dialog.component.css">
+            <link rel="stylesheet" href="/form.component.css">
             <link rel="stylesheet" href="/table.component.css">
             <link rel="stylesheet" href="/card.component.css">
             <link rel="stylesheet" href="/card-user.component.css">
@@ -27,16 +46,16 @@ const getRoute = async ({ request, env }) => {
                     </select>
                     <menu class="admin-actions">
                         <button class="btn">
-                            <img src="/img/icon/search-gray-3.svg" alt="buscar">
+                            <img src="/img/icon/search-gray-3.svg" width="20" height="20" alt="buscar">
                         </button>
                         <button class="btn btn-notification" data-active>
-                            <img src="/img/icon/bell-gray-3.svg" alt="notificaciones">
+                            <img src="/img/icon/bell-gray-3.svg" width="20" height="20" alt="notificaciones">
                         </button>
                         <button class="btn btn-notification" data-active>
-                            <img src="/img/icon/mail-gray-3.svg" alt="mensajes">
+                            <img src="/img/icon/mail-gray-3.svg" width="20" height="20" alt="mensajes">
                         </button>
                         <button class="btn">
-                            <img src="/img/icon/power-gray-3.svg" alt="cuenta">
+                            <img src="/img/icon/power-gray-3.svg" width="20" height="20" alt="cuenta">
                         </button>
                     </menu>
                 </header>
@@ -55,16 +74,130 @@ const getRoute = async ({ request, env }) => {
                         <button class="btn btn-bordered btn-bordered-blue-1">Editar perfil</button>
                     </div>
                     <menu class="admin-nav">
-                        <details open>
+                        <details>
                             <summary>
-                                <button class="btn btn-primary btn-primary-transp-gray-3">
+                                <button 
+                                    class="btn btn-primary btn-primary-transp-gray-3" 
+
+                                    on-click="admin-main-detail-button_click.action"
+                                >
                                     <img src="/img/icon/mail-gray-3.svg" width="16" height="16" alt="mostrar clientes">
                                     <span>Clientes</span>
                                 </button>
                             </summary>
                             <nav>
                                     <button class="btn btn-primary btn-primary-gray-4">
-                                        <img src="/img/icon/plus-gray-3.svg" width="16" height="16" alt="mostrar clientes">
+                                        <img src="/img/icon/plus-gray-3.svg" width="16" height="16" alt="nuevo cliente">
+                                        <span>Nuevo</span>
+                                    </button>
+                                    <button class="btn btn-primary btn-primary-blue-2">
+                                        <span>Listado</span>
+                                    </button>
+                                </nav>
+                        </details>
+                        <details>
+                            <summary>
+                                <button 
+                                    class="btn btn-primary btn-primary-transp-gray-3" 
+
+                                    on-click="admin-main-detail-button_click.action"
+                                >
+                                    <img src="/img/icon/mail-gray-3.svg" width="16" height="16" alt="mostrar proyectos">
+                                    <span>Proyectos</span>
+                                </button>
+                            </summary>
+                            <nav>
+                                    <button class="btn btn-primary btn-primary-gray-4">
+                                        <img src="/img/icon/plus-gray-3.svg" width="16" height="16" alt="nuevo proyecto">
+                                        <span>Nuevo</span>
+                                    </button>
+                                    <button class="btn btn-primary btn-primary-blue-2">
+                                        <span>Listado</span>
+                                    </button>
+                                </nav>
+                        </details>
+                        <details>
+                            <summary>
+                                <button 
+                                    class="btn btn-primary btn-primary-transp-gray-3" 
+
+                                    on-click="admin-main-detail-button_click.action"
+                                >
+                                    <img src="/img/icon/mail-gray-3.svg" width="16" height="16" alt="mostrar rutas">
+                                    <span>Rutas</span>
+                                </button>
+                            </summary>
+                            <nav>
+                                    <button class="btn btn-primary btn-primary-gray-4">
+                                        <img src="/img/icon/plus-gray-3.svg" width="16" height="16" alt="nueva ruta">
+                                        <span>Nuevo</span>
+                                    </button>
+                                    <button class="btn btn-primary btn-primary-blue-2">
+                                        <span>Listado</span>
+                                    </button>
+                                </nav>
+                        </details>
+                        <details>
+                            <summary>
+                                <button 
+                                    class="btn btn-primary btn-primary-transp-gray-3" 
+
+                                    on-click="admin-main-detail-button_click.action"
+                                >
+                                    <img src="/img/icon/mail-gray-3.svg" width="16" height="16" alt="mostrar colaboradores">
+                                    <span>Colaboradores</span>
+                                </button>
+                            </summary>
+                            <nav>
+                                    <button class="btn btn-primary btn-primary-gray-4">
+                                        <img src="/img/icon/plus-gray-3.svg" width="16" height="16" alt="nuevo colaborador">
+                                        <span>Nuevo</span>
+                                    </button>
+                                    <button class="btn btn-primary btn-primary-blue-2">
+                                        <span>Listado</span>
+                                    </button>
+                                </nav>
+                        </details>
+                        <details>
+                            <summary>
+                                <button 
+                                    class="btn btn-primary btn-primary-transp-gray-3" 
+
+                                    on-click="admin-main-detail-button_click.action"
+                                >
+                                    <img src="/img/icon/mail-gray-3.svg" width="16" height="16" alt="mostrar permisos">
+                                    <span>Permisos</span>
+                                </button>
+                            </summary>
+                            <nav>
+                                    <button class="btn btn-primary btn-primary-gray-4">
+                                        <img src="/img/icon/plus-gray-3.svg" width="16" height="16" alt="nuevo permiso">
+                                        <span>Nuevo</span>
+                                    </button>
+                                    <button class="btn btn-primary btn-primary-blue-2">
+                                        <span>Listado</span>
+                                    </button>
+                                </nav>
+                        </details>
+                        <details>
+                            <summary>
+                                <button 
+                                    class="btn btn-primary btn-primary-transp-gray-3" 
+
+                                    on-click="admin-main-detail-button_click.action"
+                                >
+                                    <img src="/img/icon/mail-gray-3.svg" width="16" height="16" alt="mostrar usuarios">
+                                    <span>Usuarios</span>
+                                </button>
+                            </summary>
+                            <nav>
+                                    <button 
+                                        class="btn btn-primary btn-primary-gray-4"
+                                        
+                                        data-dialog-id="add-user"
+                                        on-click="open-dialog-btn_click.action"
+                                    >
+                                        <img src="/img/icon/plus-gray-3.svg" width="16" height="16" alt="nuevo usuario">
                                         <span>Nuevo</span>
                                     </button>
                                     <button class="btn btn-primary btn-primary-blue-2">
@@ -84,8 +217,13 @@ const getRoute = async ({ request, env }) => {
                             <p><strong>Listado</strong></p>
                         </menu>
                         <menu>
-                            <button class="btn btn-primary btn-primary-blue-1">
-                                <img src="/img/icon/plus-white.svg" width="24" height="24" alt="agregar usuario">
+                            <button 
+                                class="btn btn-primary btn-primary-blue-1" 
+
+                                data-dialog-id="add-user"
+                                on-click="open-dialog-btn_click.action"
+                            >
+                                <img src="/img/icon/plus-white.svg" width="20" height="20" alt="agregar usuario">
                             </button>
                         </menu>
                     </header>
@@ -102,99 +240,26 @@ const getRoute = async ({ request, env }) => {
                             </menu>
                         </header>
                         <div class="content">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <button class="btn btn-primary">
-                                                <span>Usuario</span>
-                                                <img src="/img/icon/sort-gray-3.svg" width="12" height="12" alt="ordenar por Usuario">
-                                            </button> 
-                                        </th>
-                                        <th>
-                                            <button class="btn btn-primary">
-                                                <span>Nombre</span>
-                                                <img src="/img/icon/sort-gray-3.svg" width="12" height="12" alt="ordenar por Nombre">
-                                            </button> 
-                                        </th>
-                                        <th>
-                                            <button class="btn btn-primary">
-                                                <span>Apellidos</span>
-                                                <img src="/img/icon/sort-gray-3.svg" width="12" height="12" alt="ordenar por Apellidos">
-                                            </button> 
-                                        </th>
-                                        <th>
-                                            <button class="btn btn-primary">
-                                                <span>E-mail</span>
-                                                <img src="/img/icon/sort-gray-3.svg" width="12" height="12" alt="ordenar por E-mail">
-                                            </button> 
-                                        </th>
-                                        <th>
-                                            <button class="btn btn-primary">
-                                                <span>Teléfono</span>
-                                                <img src="/img/icon/sort-gray-3.svg" width="12" height="12" alt="ordenar por Teléfono">
-                                            </button> 
-                                        </th>
-                                        <th>
-                                            <button class="btn btn-primary">
-                                                <span>Estado</span>
-                                                <img src="/img/icon/sort-gray-3.svg" width="12" height="12" alt="ordenar por Estado">
-                                            </button> 
-                                        </th>                                        
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="card-cell"> 
-                                            <p>Nombre de usuario</p>
-                                            <div class="btn-popup">
-                                                <span class="btn btn-primary btn-primary-blue-1 popup-trigger" tabindex="-1">
-                                                    <span>Acciones</span>
-                                                    <img src="/img/icon/chevron-down-white.svg" width="16" height="16" alt="agregar usuario">
-                                                    <menu class="popup">
-                                                        <button class="btn btn-primary">
-                                                            <img src="/img/icon/plus-gray-3.svg" width="16" height="16" alt="mostrar clientes">
-                                                            <span>Editar</span>
-                                                        </button>
-                                                        <button class="btn btn-primary">
-                                                            <img src="/img/icon/plus-gray-3.svg" width="16" height="16" alt="mostrar clientes">
-                                                            <span>Eliminar</span>
-                                                        </button>
-                                                    </menu>
-                                                </span>
-                                            </div>
-                                            </div>
-                                           
-                                        </td>
-                                        <td>
-                                            <p>Nombre de usuario</p>
-                                        </td>
-                                        <td>
-                                            <p>Apellidos</p>
-                                        </td>
-                                        <td>
-                                            <p>email@email.com</p>
-                                        </td>
-                                        <td>
-                                            <p>000 000 000</p>
-                                        </td>
-                                        <td>
-                                            <p class="btn btn-status">
-                                                <span>Activo</span>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
+                            ${TableUserRowComponent.getHTML({ users })}
                         </div>
                     </div>
                 </div>
             </main> 
+            ${CrudUserDialog.getHTML({
+                dialogId: 'add-user',
+                title: 'Nuevo usuario',
+                description: 'Añade los siguientes datos al nuevo usuario.',
+                mode: 'add',
+            })}
         `,
         env,
     })
+
+    const response = streamResult?.response
+    const authCookie = response?.headers?.getAll('Set-Cookie')?.filter(cookie => !cookie.startsWith('Authorization'))
+    console.log('--- authCookie =', authCookie)
+
+    return streamResult
 }
 
 

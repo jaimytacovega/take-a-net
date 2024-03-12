@@ -49,6 +49,8 @@ main.auth-main > .thumbnail > :not(img){
 main.admin-main{
     inline-size: 100svw;
     block-size: 100svh;
+    /* min-block-size: 800px; */
+    max-block-size: 800px;
     padding-inline: 0 72px;
     padding-block: 24px 48px;
     display: grid;
@@ -105,6 +107,12 @@ main.admin-main > aside > .admin-nav :is(a, button){
     inline-size: 100%;
     border-radius: 0;
     padding-block: 12px;
+    padding-inline: 48px;
+    justify-content: start;
+}
+
+main.admin-main > aside > .admin-nav nav :is(a, button){
+    padding-inline: 60px 48px;
 }
 
 main.admin-main > .content{

@@ -12,8 +12,7 @@ const getAutorizationCookie = ({ request } = {}) => {
 }
 
 const addAuthorizationCookie = ({ credential }) => {
-    const { id, displayName, email, photoURL } = credential
-    const userId = JSON.stringify({ id, displayName, email, photoURL })
+    const userId = JSON.stringify(credential)
     
     if (isCookieStoreAvailable()) return addCookie({ key: 'Authorization', value: userId, config: { sameSite: 'strict', secure: true } })
 
