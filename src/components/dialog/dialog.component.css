@@ -1,0 +1,60 @@
+dialog::backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    background: #00000080;
+}
+
+dialog{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    animation: open-dialog .3s ease reverse;
+    border: none;
+}
+
+dialog[open] {
+    animation: open-dialog .3s ease normal;
+}
+
+@keyframes open-dialog {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.crud-dialog{
+    min-inline-size: 600px;
+    padding-inline: 48px;
+}
+
+.crud-dialog[open]{
+    display: flex;
+    flex-flow: column wrap;
+    gap: 24px;
+}
+
+.crud-dialog > header{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+.crud-dialog > .content{
+    display: flex;
+    flex-flow: column wrap;
+    gap: 12px;
+}
+
+.crud-dialog > .content > header{
+    display: flex;
+    flex-flow: column wrap;
+    gap: 4px;
+    padding-block: 0 12px;
+}
